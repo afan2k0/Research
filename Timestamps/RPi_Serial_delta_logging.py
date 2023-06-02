@@ -52,11 +52,8 @@ with open('logfile_serial_multi.log', 'w') as log_file:
             if current_state[i] == 's':  # keep writing if state is sending
                 ports[i].write("{:f}\n".format(values[i]).encode('utf-8'))
                 send_timestamps[i].append(datetime.now())
-                log_file.write(f"Serial {i} Sent Value {values[i]} @ {datetime.now()}")
                 if i == 0:
-                    log_file.write("*\n")
-                else:
-                    log_file.write("\n")
+                    log_file.write(f"Serial {i} Sent Value {values[i]} @ {datetime.now()}\n")
                 current_state[i] = 'r'
                 if(i == 0):
                     first_send_time = time.time()
@@ -70,6 +67,6 @@ with open('logfile_serial_multi.log', 'w') as log_file:
                     values[i] = float(line)
                     receive_timestamps[i].append(datetime.now())
                     current_state[i] = 's'
-                    log_file.write(f"Serial {i} Received Value {values[i]}  @ {datetime.now()}\n")
+                    #log_file.write(f"Serial {i} Received Value {values[i]}  @ {datetime.now()}\n")
         sending_completed = True
         last_receive_time = time.time()
