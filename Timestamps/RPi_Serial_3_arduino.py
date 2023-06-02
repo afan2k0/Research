@@ -34,6 +34,7 @@ for i, port in enumerate(ports):
             time.sleep(0.1)  # avoid busy-waiting
 
 current_state = ['s', 's', 's']  # current state is the state that it needs to do
+prev_state = 'r'
 while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
     # need to keep sending until current state != all s
     for i in range(len(current_state)):
@@ -42,13 +43,15 @@ while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
             send_timestamps[i].append(datetime.now())
             print(f"Serial {i} Sent Value {values[i]} @ {datetime.now()}")
             current_state[i] = 'r'
-            if(i == 0):
+            if(i == 0 and prev_state == 'r'):
                 s0_send_times.append(datetime.now())
+                prev_state = 's'
         elif ports[i].in_waiting > 0 and current_state[i] == 'r':  # start reading
             line = ports[i].readline().decode('utf-8').rstrip()
             values[i] = float(line)
             receive_timestamps[i].append(datetime.now())
             current_state[i] = 's'
+            prev_state = 'r'
             print(f"Serial {i} Received Value {values[i]}  @ {datetime.now()}")
 # Calculate average delays
 average_delays = []
@@ -73,6 +76,7 @@ receive_timestamps = [[] for _ in serial_ports]
 
 s0_send_times = []
 current_state = ['s', 's', 's']  # current state is the state that it needs to do
+prev_state = 'r'
 with open('logfile_serial_3multi.log', 'w') as log_file:
     while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
         # need to keep sending until current state != all s
@@ -82,13 +86,15 @@ with open('logfile_serial_3multi.log', 'w') as log_file:
                 send_timestamps[i].append(datetime.now())
                 log_file.write(f"Serial {i} Sent Value {values[i]} @ {datetime.now()}\n")
                 current_state[i] = 'r'
-                if(i == 0):
+                if(i == 0 and prev_state == 'r'):
                     s0_send_times.append(datetime.now())
+                    prev_state = 's'
             elif ports[i].in_waiting > 0 and current_state[i] == 'r':  # start reading
                 line = ports[i].readline().decode('utf-8').rstrip()
                 values[i] = float(line)
                 receive_timestamps[i].append(datetime.now())
                 current_state[i] = 's'
+                prev_state = 'r'
                 log_file.write(f"Serial {i} Received Value {values[i]} @ {datetime.now()}\n")
     # Calculate average delays
     average_delays = []

@@ -2,7 +2,7 @@ import serial
 import time
 from datetime import datetime, timedelta
 # Initialize the serial connections
-serial_ports = ['/dev/ttyACM0', '/dev/ttyACM1', '/dev/ttyACM2']
+serial_ports = ['/dev/ttyACM0', '/dev/ttyACM1', '/dev/ttyACM2', '/dev/ttyACM3']
 serial_baud_rate = 115200
 serial_timeout = 1
 num_ports = len(serial_ports)
@@ -11,7 +11,7 @@ num_ports = len(serial_ports)
 ports = [serial.Serial(port, serial_baud_rate, timeout=serial_timeout) for port in serial_ports]
 
 # Initialize the data to be sent
-values = [-999.99, -799.99, -599.99]
+values = [-999.99, -999.99, -999.99, -999.99]
 
 send_timestamps = [[] for _ in serial_ports]
 receive_timestamps = [[] for _ in serial_ports]
@@ -33,8 +33,8 @@ for i, port in enumerate(ports):
         else:
             time.sleep(0.1)  # avoid busy-waiting
 
-current_state = ['s', 's', 's']  # current state is the state that it needs to do
-while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
+current_state = ['s', 's', 's', 's']  # current state is the state that it needs to do
+while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99 or values[3] < 999.99:
     # need to keep sending until current state != all s
     for i in range(len(current_state)):
         if current_state[i] == 's':  # keep writing if state is sending
@@ -66,15 +66,15 @@ print(f"Communication Cycle (in seconds): {com_cycle}")
 
 
 # Initialize the data to be sent
-values = [-999.99, -799.99, -599.99]
+values = [-999.99, -999.99, -999.99, -999.99]
 
 send_timestamps = [[] for _ in serial_ports]
 receive_timestamps = [[] for _ in serial_ports]
 
 s0_send_times = []
-current_state = ['s', 's', 's']  # current state is the state that it needs to do
-with open('logfile_serial_3multi.log', 'w') as log_file:
-    while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
+current_state = ['s', 's', 's', 's']  # current state is the state that it needs to do
+with open('logfile_serial_4multi.log', 'w') as log_file:
+    while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99 or values[2] < 999.99:
         # need to keep sending until current state != all s
         for i in range(len(current_state)):
             if current_state[i] == 's':  # keep writing if state is sending
