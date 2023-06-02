@@ -36,7 +36,7 @@ last_receive_time = time.time()
 first_send_time = time.time()
 current_state = ['s', 's', 's']  # current state is the state that it needs to do
 sending_completed = False
-with open('logfile_serial_multi.log', 'w') as log_file:
+with open('logfile_serial_multi1.txt', 'w') as log_file:
     while values[0] < 999.99 or values[1] < 999.99 or values[2] < 999.99:
         # Get the current time at the start of the sequence
         current_time = time.time()
@@ -53,7 +53,7 @@ with open('logfile_serial_multi.log', 'w') as log_file:
                 ports[i].write("{:f}\n".format(values[i]).encode('utf-8'))
                 send_timestamps[i].append(datetime.now())
                 if i == 0:
-                    log_file.write(f"Serial {i} Sent Value {values[i]} @ {datetime.now()}\n")
+                    log_file.write(f"{time.time()}\n")
                 current_state[i] = 'r'
                 if(i == 0):
                     first_send_time = time.time()
